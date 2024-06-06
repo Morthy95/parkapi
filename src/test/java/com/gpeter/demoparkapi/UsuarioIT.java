@@ -1,5 +1,7 @@
 package com.gpeter.demoparkapi;
 
+import java.util.List;
+
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -11,8 +13,6 @@ import com.gpeter.demoparkapi.web.dto.UsuarioCreateDto;
 import com.gpeter.demoparkapi.web.dto.UsuarioResponseDto;
 import com.gpeter.demoparkapi.web.dto.UsuarioSenhaDto;
 import com.gpeter.demoparkapi.web.exception.ErrorMessage;
-
-import java.util.List;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @Sql(scripts = "/sql/usuarios/usuarios-insert.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
@@ -176,7 +176,7 @@ public class UsuarioIT {
                 .patch()
                 .uri("/api/v1/usuarios/100")
                 .contentType(MediaType.APPLICATION_JSON)
-                .bodyValue(new UsuarioSenhaDto("123456", "123456", "123456"))
+                .bodyValue(new UsuarioSenhaDto("123456", "123466", "123466"))
                 .exchange()
                 .expectStatus().isNoContent();
     }
@@ -270,15 +270,16 @@ public class UsuarioIT {
 
     @Test
     public void listarUsuarios_SemQualquerParametro_RetornarListaDeUsuariosComStatus200() {
-        List<UsuarioResponseDto> responseBody = testClient
-                .get()
-                .uri("/api/v1/usuarios")
-                .exchange()
-                .expectStatus().isOk()
-                .expectBodyList(UsuarioResponseDto.class)
-                .returnResult().getResponseBody();
+            List<UsuarioResponseDto> responseBody = testClient
+                            .get()
+                            .uri("/api/v1/usuarios")
+                            .exchange()
+                            .expectStatus().isOk()
+                            .expectBodyList(UsuarioResponseDto.class)
+                            .returnResult().getResponseBody();
 
-        org.assertj.core.api.Assertions.assertThat(responseBody).isNotNull();
-        org.assertj.core.api.Assertions.assertThat(responseBody.size()).isEqualTo(3);
+            org.assertj.core.api.Assertions.assertThat(responseBody).isNotNull();
+            org.assertj.core.api.Assertions.assertThat(responseBody.size()).isEqualTo(3);
     }
+    
 }
